@@ -358,7 +358,7 @@ For support and questions:
 
 📧 Email: abhay5revankar@gmail.com
 
-## Documentation : 
-## video demo :
+## Documentation : https://drive.google.com/file/d/1sOlgZ0aPtbcQ54cLrAi8YxHM5LPMOHJT/view?usp=sharing
+## video demo : https://drive.google.com/file/d/1OjdLdFbjEwIqOs6s6pmV5_bgUuzFwudF/view?usp=drive_link
 
 
