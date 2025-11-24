@@ -1,0 +1,9 @@
+# Create .gitignore with all necessary exclusions
+echo "node_modules/
+dump.rdb
+.env
+*.log
+.DS_Store
+.nyc_output/
+coverage/
+package-lock.json" > .gitignore

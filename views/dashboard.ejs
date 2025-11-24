@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert Escalation System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: #2c3e50; color: white; padding: 1rem; margin-bottom: 2rem; border-radius: 8px; }
+        .card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .stat-card { text-align: center; padding: 20px; border-radius: 8px; color: white; }
+        .critical { background: #e74c3c; }
+        .warning { background: #f39c12; }
+        .info { background: #3498db; }
+        .resolved { background: #27ae60; }
+        .refresh-btn { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-bottom: 20px; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-tab { padding: 10px 20px; background: #ecf0f1; border-radius: 4px; text-decoration: none; color: #2c3e50; font-weight: bold; }
+        .nav-tab.active { background: #3498db; color: white; }
+        .demo-notice { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🚨 Alert Escalation System</h1>
+            <p>Real-time Monitoring Dashboard</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <a href="/dashboard" class="nav-tab active">Public View</a>
+            <a href="/dashboard/enhanced" class="nav-tab">Enhanced Dashboard</a>
+            <a href="/health" class="nav-tab">System Health</a>
+        </div>
+
+        <div class="demo-notice">
+            <strong>📢 Demo Mode:</strong> This is a public dashboard view. For full features including alert creation and advanced analytics, please use the Enhanced Dashboard.
+        </div>
+
+        <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+        
+        <div class="card">
+            <h2>📊 System Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card critical">
+                    <h3>🚨 Critical</h3>
+                    <div class="stat-number"><%= stats.bySeverity.CRITICAL || 0 %></div>
+                </div>
+                <div class="stat-card warning">
+                    <h3>⚠️ Warning</h3>
+                    <div class="stat-number"><%= stats.bySeverity.WARNING || 0 %></div>
+                </div>
+                <div class="stat-card info">
+                    <h3>ℹ️ Info</h3>
+                    <div class="stat-number"><%= stats.bySeverity.INFO || 0 %></div>
+                </div>
+                <div class="stat-card resolved">
+                    <h3>📈 Total</h3>
+                    <div class="stat-number"><%= stats.total || 0 %></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔑 Access the Full System</h2>
+            <p>For complete access to create alerts, view analytics, and manage the system:</p>
+            <div style="margin: 20px 0;">
+                <a href="/dashboard/enhanced" class="refresh-btn" style="background: #9b59b6;">🌟 Go to Enhanced Dashboard</a>
+            </div>
+            <p><strong>Demo Credentials:</strong></p>
+            <ul>
+                <li><strong>👑 Admin:</strong> admin / admin123 (Full access)</li>
+                <li><strong>👨‍💼 Operator:</strong> operator / operator123 (Create & manage alerts)</li>
+                <li><strong>👁️ Viewer:</strong> viewer / viewer123 (Read-only access)</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>ℹ️ System Information</h2>
+            <p><strong>Last Updated:</strong> <%= currentTime %></p>
+            <p><strong>Total Alerts:</strong> <%= stats.total || 0 %></p>
+            <p><strong>Status:</strong> 🟢 Operational</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

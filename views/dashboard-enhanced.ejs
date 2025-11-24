@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert Intelligence Dashboard | MoveInSync</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #9b59b6;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --border: #e0e6ed;
+            --bg-light: #f8f9fa;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--secondary), var(--info));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--light);
+            padding: 6px;
+            border-radius: var(--radius);
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: var(--secondary);
+            box-shadow: var(--shadow);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* Login Form */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 70vh;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 440px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--success), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--info));
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .credentials-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--info);
+        }
+
+        .credentials-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .credential-item:last-child {
+            border-bottom: none;
+        }
+
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-admin { background: var(--danger); color: white; }
+        .badge-operator { background: var(--warning); color: white; }
+        .badge-viewer { background: var(--success); color: white; }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            width: 100%;
+            display: none;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-light {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-light:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .icon-critical { background: linear-gradient(135deg, var(--danger), #c0392b); }
+        .icon-warning { background: linear-gradient(135deg, var(--warning), #e67e22); }
+        .icon-info { background: linear-gradient(135deg, var(--info), #8e44ad); }
+        .icon-total { background: linear-gradient(135deg, var(--secondary), #2980b9); }
+
+        .stat-content h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .stat-trend {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 20px;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .trend-up { background: #e8f5e8; color: var(--success); }
+        .trend-down { background: #ffeaea; color: var(--danger); }
+        .trend-neutral { background: #f0f0f0; color: var(--gray); }
+
+        /* Main Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--bg-light);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-critical { background: #ffeaea; color: var(--danger); }
+        .badge-warning { background: #fff4e6; color: var(--warning); }
+        .badge-info { background: #e8f4fd; color: var(--secondary); }
+
+        /* Alert Form */
+        .alert-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        /* Insights */
+        .insights-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .insight-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--info);
+        }
+
+        .insight-card.increasing { border-left-color: var(--danger); }
+        .insight-card.decreasing { border-left-color: var(--success); }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-icon {
+            font-size: 1.5rem;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Error Message */
+        .error-message {
+            background: #ffeaea;
+            color: var(--danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid var(--danger);
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-tabs {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .alert-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="logo-text">AlertIntelligence</div>
+                </div>
+                
+                <nav class="nav-tabs">
+                    <a href="/dashboard" class="nav-tab">
+                        <i class="fas fa-chart-bar"></i>Public Dashboard
+                    </a>
+                    <a href="/dashboard/enhanced" class="nav-tab active">
+                        <i class="fas fa-rocket"></i>Enhanced Dashboard
+                    </a>
+                    <a href="/health" class="nav-tab">
+                        <i class="fas fa-heart-pulse"></i>System Health
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Login Section -->
+            <div id="loginSection" class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <div class="login-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h1 class="login-title">Welcome Back</h1>
+                        <p class="login-subtitle">Sign in to access the Alert Intelligence Dashboard</p>
+                    </div>
+
+                    <div class="credentials-card">
+                        <h3 class="credentials-title">
+                            <i class="fas fa-key"></i>Demo Credentials
+                        </h3>
+                        <div class="credential-item">
+                            <span>Administrator</span>
+                            <span class="role-badge badge-admin">admin / admin123</span>
+                        </div>
+                        <div class="credential-item">
+                            <span>Operator</span>
+                            <span class="role-badge badge-operator">operator / operator123</span>
+                        </div>
+                        <div class="credential-item">
+                            <span>Viewer</span>
+                            <span class="role-badge badge-viewer">viewer / viewer123</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="username" class="form-input" placeholder="Enter your username" value="operator">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" value="operator123">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="login()">
+                        <i class="fas fa-sign-in-alt"></i>Sign In to Dashboard
+                    </button>
+
+                    <div id="loginError" class="error-message"></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="dashboardContent" class="dashboard-content">
+                <!-- Dashboard Header -->
+                <div class="dashboard-header">
+                    <div class="welcome-section">
+                        <h1>Alert Intelligence Dashboard</h1>
+                        <p>Real-time monitoring and management console</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-light" onclick="loadDashboardData()">
+                            <i class="fas fa-refresh"></i>Refresh
+                        </button>
+                        <button class="btn btn-light" onclick="viewApiToken()">
+                            <i class="fas fa-key"></i>API Token
+                        </button>
+                        <button class="btn btn-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Info -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3 style="color: var(--dark); margin-bottom: 0.25rem;" id="userName">Welcome back, User</h3>
+                                <p style="color: var(--gray); margin: 0;">Last updated: <span id="lastUpdated"></span></p>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-outline btn-sm" onclick="testWebhook()">
+                                    <i class="fas fa-bell"></i>Test Webhook
+                                </button>
+                                <button class="btn btn-outline btn-sm" onclick="viewSystemHealth()">
+                                    <i class="fas fa-heart-pulse"></i>System Health
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon icon-critical">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Critical Alerts</h3>
+                            <div class="stat-value" id="criticalCount">0</div>
+                            <div class="stat-trend trend-up" id="criticalTrend">+0</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon icon-warning">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Warning Alerts</h3>
+                            <div class="stat-value" id="warningCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon icon-info">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Info Alerts</h3>
+                            <div class="stat-value" id="infoCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon icon-total">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Alerts</h3>
+                            <div class="stat-value" id="totalCount">0</div>
+                            <div class="stat-trend trend-neutral" id="totalTrend">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Left Column -->
+                    <div class="left-column">
+                        <!-- Alert Creation - Only show for Admin and Operator -->
+                        <div id="alertCreationSection" class="card" style="margin-bottom: 1.5rem; display: none;">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-plus-circle"></i>Create New Alert
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert-form">
+                                    <div>
+                                        <label class="form-label">Alert Type</label>
+                                        <select id="alertType" class="form-input">
+                                            <option value="overspeed">🚗 Overspeed</option>
+                                            <option value="feedback_negative">👥 Negative Feedback</option>
+                                            <option value="document_expiry">📄 Document Expiry</option>
+                                            <option value="safety_incident">🚨 Safety Incident</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Driver ID</label>
+                                        <input type="text" id="driverId" class="form-input" placeholder="Enter Driver ID" value="driver_001">
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary" onclick="createAlert()" style="height: 42px;">
+                                            <i class="fas fa-bolt"></i>Create Alert
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trend Chart -->
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-chart-line"></i>Alert Trends (7 Days)
+                                </h2>
+                                <div class="card-actions">
+                                    <button class="btn btn-outline btn-sm" onclick="generateSampleData()">
+                                        <i class="fas fa-database"></i>Sample Data
+                                    </button>
+                                    <button class="btn btn-outline btn-sm" onclick="loadTrendData()">
+                                        <i class="fas fa-refresh"></i>Refresh
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="trendCanvas"></canvas>
+                                </div>
+                                <div id="chartStatus" style="margin-top: 1rem; font-size: 0.85rem; color: var(--gray); text-align: center;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Top Drivers -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-trophy"></i>Top 5 Drivers - Most Alerts
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <div id="topDriversContainer">
+                                    <div class="empty-state">
+                                        <i class="fas fa-users"></i>
+                                        <h3>No Alert Data</h3>
+                                        <p>Create some alerts to see the top drivers</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="right-column">
+                        <!-- System Insights -->
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-brain"></i>System Insights
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <div id="insightsContainer">
+                                    <div class="empty-state">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <h3>No Insights Yet</h3>
+                                        <p>Generate data to see system insights</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Closed Alerts -->
+                        <div class="card" style="margin-bottom: 1.5rem;">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-check-circle"></i>Recently Auto-Closed
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <div id="autoClosedContainer">
+                                    <div class="empty-state">
+                                        <i class="fas fa-clock"></i>
+                                        <h3>No Auto-Closed Alerts</h3>
+                                        <p>Auto-closed alerts will appear here</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-bolt"></i>Quick Actions
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <div style="display: grid; gap: 0.75rem;">
+                                    <button class="btn btn-outline" onclick="testRuleEngine()" style="justify-content: start;">
+                                        <i class="fas fa-cogs"></i>Test Rule Engine
+                                    </button>
+                                    <button class="btn btn-outline" onclick="viewSystemHealth()" style="justify-content: start;">
+                                        <i class="fas fa-heart-pulse"></i>System Status
+                                    </button>
+                                    <button class="btn btn-outline" onclick="viewApiToken()" style="justify-content: start;">
+                                        <i class="fas fa-key"></i>API Access
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Messages -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Message</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">This is a modal message.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let authToken = localStorage.getItem('authToken');
+        let currentUser = null;
+        let trendChart = null;
+
+        // Check if already logged in
+        if (authToken) {
+            verifyTokenAndLoadDashboard();
+        }
+
+        // Modal functions
+        function showModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('messageModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('messageModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('messageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+
+            try {
+                // Simulate API call - replace with actual API endpoint
+                const data = await simulateLogin(username, password);
+
+                if (data.success) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    
+                    // Hide login, show dashboard
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    document.getElementById('userName').textContent = `Welcome, ${currentUser.name} (${currentUser.role})`;
+                    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+                    
+                    // Show/hide alert creation based on role
+                    const alertCreationSection = document.getElementById('alertCreationSection');
+                    if (currentUser.role === 'admin' || currentUser.role === 'operator') {
+                        alertCreationSection.style.display = 'block';
+                    } else {
+                        alertCreationSection.style.display = 'none';
+                    }
+                    
+                    loadDashboardData();
+                } else {
+                    showError(data.error || 'Login failed');
+                }
+            } catch (error) {
+                showError('Login failed. Please try again.');
+                console.error('Login error:', error);
+            }
+        }
+
+        // Simulate login - replace with actual API call
+        async function simulateLogin(username, password) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const users = {
+                        'admin': { name: 'Administrator', role: 'admin' },
+                        'operator': { name: 'Operator', role: 'operator' },
+                        'viewer': { name: 'Viewer', role: 'viewer' }
+                    };
+                    
+                    if (users[username] && password === username + '123') {
+                        resolve({
+                            success: true,
+                            token: 'demo_token_' + username,
+                            user: users[username]
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            error: 'Invalid credentials'
+                        });
+                    }
+                }, 1000);
+            });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        async function verifyTokenAndLoadDashboard() {
+            try {
+                // Simulate token verification - replace with actual API call
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    currentUser = userData;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    document.getElementById('userName').textContent = `Welcome, ${currentUser.name} (${currentUser.role})`;
+                    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+                    
+                    // Show/hide alert creation based on role
+                    const alertCreationSection = document.getElementById('alertCreationSection');
+                    if (currentUser.role === 'admin' || currentUser.role === 'operator') {
+                        alertCreationSection.style.display = 'block';
+                    } else {
+                        alertCreationSection.style.display = 'none';
+                    }
+                    
+                    loadDashboardData();
+                } else {
+                    // Token invalid, clear storage
+                    logout();
+                }
+            } catch (error) {
+                logout();
+            }
+        }
+
+        function logout() {
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            document.getElementById('loginSection').style.display = 'flex';
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        async function loadDashboardData() {
+            if (!authToken) return;
+            
+            try {
+                // Simulate API calls - replace with actual API endpoints
+                const dashboardData = await simulateDashboardData();
+                const trendsData = await simulateTrendsData();
+                const insightsData = await simulateInsightsData();
+
+                updateDashboard(dashboardData);
+                renderTrendChart(trendsData);
+                updateInsights(insightsData);
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showModal('Error', 'Failed to load dashboard data. Please try again.');
+            }
+        }
+
+        // Simulate dashboard data - replace with actual API call
+        async function simulateDashboardData() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        stats: {
+                            bySeverity: {
+                                CRITICAL: Math.floor(Math.random() * 20) + 5,
+                                WARNING: Math.floor(Math.random() * 30) + 10,
+                                INFO: Math.floor(Math.random() * 50) + 20
+                            },
+                            total: Math.floor(Math.random() * 100) + 50
+                        },
+                        trends: {
+                            critical: Math.floor(Math.random() * 10) - 5,
+                            total: Math.floor(Math.random() * 20) - 10
+                        },
+                        topDrivers: [
+                            { driverId: 'driver_001', totalAlerts: 15, criticalCount: 5, warningCount: 7, status: 'active' },
+                            { driverId: 'driver_042', totalAlerts: 12, criticalCount: 3, warningCount: 6, status: 'active' },
+                            { driverId: 'driver_087', totalAlerts: 9, criticalCount: 2, warningCount: 4, status: 'active' },
+                            { driverId: 'driver_123', totalAlerts: 7, criticalCount: 1, warningCount: 3, status: 'inactive' },
+                            { driverId: 'driver_156', totalAlerts: 5, criticalCount: 0, warningCount: 2, status: 'active' }
+                        ],
+                        recentAutoClosed: [
+                            { alertId: 'alert_' + Date.now(), sourceType: 'document_expiry', driverId: 'driver_009', closedAt: new Date(Date.now() - 3600000).toISOString(), autoCloseReason: 'Document renewed' },
+                            { alertId: 'alert_' + (Date.now() - 1000), sourceType: 'feedback_negative', driverId: 'driver_015', closedAt: new Date(Date.now() - 7200000).toISOString(), autoCloseReason: 'Time expired' },
+                            { alertId: 'alert_' + (Date.now() - 2000), sourceType: 'overspeed', driverId: 'driver_022', closedAt: new Date(Date.now() - 10800000).toISOString(), autoCloseReason: 'Manual resolution' }
+                        ]
+                    });
+                }, 800);
+            });
+        }
+
+        // Simulate trends data - replace with actual API call
+        async function simulateTrendsData() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const data = [];
+                    const today = new Date();
+                    
+                    for (let i = 6; i >= 0; i--) {
+                        const date = new Date(today);
+                        date.setDate(today.getDate() - i);
+                        
+                        data.push({
+                            date: date.toISOString().split('T')[0],
+                            critical: Math.floor(Math.random() * 15) + 2,
+                            warning: Math.floor(Math.random() * 25) + 5,
+                            info: Math.floor(Math.random() * 40) + 10,
+                            total: Math.floor(Math.random() * 80) + 20
+                        });
+                    }
+                    
+                    resolve(data);
+                }, 600);
+            });
+        }
+
+        // Simulate insights data - replace with actual API call
+        async function simulateInsightsData() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve([
+                        {
+                            title: "Alert Volume Trend",
+                            description: "Critical alerts have increased by 15% compared to last week",
+                            trend: "increasing",
+                            recommendation: "Review driver training protocols for overspeed incidents"
+                        },
+                        {
+                            title: "Auto-Close Efficiency",
+                            description: "85% of document expiry alerts are being auto-closed within 24 hours",
+                            trend: "decreasing",
+                            recommendation: "Consider reducing auto-close timeframe to 12 hours"
+                        },
+                        {
+                            title: "Driver Performance",
+                            description: "Top 5 drivers account for 40% of all alerts",
+                            trend: "increasing",
+                            recommendation: "Schedule performance reviews for these drivers"
+                        }
+                    ]);
+                }, 500);
+            });
+        }
+
+        function updateDashboard(data) {
+            // Update statistics
+            document.getElementById('criticalCount').textContent = data.stats.bySeverity?.CRITICAL || 0;
+            document.getElementById('warningCount').textContent = data.stats.bySeverity?.WARNING || 0;
+            document.getElementById('infoCount').textContent = data.stats.bySeverity?.INFO || 0;
+            document.getElementById('totalCount').textContent = data.stats.total || 0;
+
+            // Update trend indicators
+            const criticalTrend = document.getElementById('criticalTrend');
+            const totalTrend = document.getElementById('totalTrend');
+            
+            if (data.trends?.critical > 0) {
+                criticalTrend.textContent = `+${data.trends.critical}`;
+                criticalTrend.className = 'stat-trend trend-up';
+            } else if (data.trends?.critical < 0) {
+                criticalTrend.textContent = data.trends.critical;
+                criticalTrend.className = 'stat-trend trend-down';
+            } else {
+                criticalTrend.textContent = '0';
+                criticalTrend.className = 'stat-trend trend-neutral';
+            }
+
+            if (data.trends?.total > 0) {
+                totalTrend.textContent = `+${data.trends.total}`;
+                totalTrend.className = 'stat-trend trend-up';
+            } else if (data.trends?.total < 0) {
+                totalTrend.textContent = data.trends.total;
+                totalTrend.className = 'stat-trend trend-down';
+            } else {
+                totalTrend.textContent = '0';
+                totalTrend.className = 'stat-trend trend-neutral';
+            }
+
+            // Update top drivers
+            updateTopDrivers(data.topDrivers || []);
+            
+            // Update auto-closed alerts
+            updateAutoClosedAlerts(data.recentAutoClosed || []);
+            
+            // Update last updated time
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        }
+
+        function updateTopDrivers(drivers) {
+            const container = document.getElementById('topDriversContainer');
+            
+            if (drivers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>No Alert Data</h3>
+                        <p>Create some alerts to see the top drivers</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Driver ID</th>
+                                <th>Alert Count</th>
+                                <th>Critical</th>
+                                <th>Warning</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${drivers.map(driver => `
+                                <tr>
+                                    <td><strong>${driver.driverId}</strong></td>
+                                    <td>${driver.totalAlerts}</td>
+                                    <td>${driver.criticalCount || 0}</td>
+                                    <td>${driver.warningCount || 0}</td>
+                                    <td>
+                                        <span class="badge ${driver.status === 'active' ? 'badge-warning' : 'badge-info'}">
+                                            ${driver.status || 'unknown'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function updateAutoClosedAlerts(alerts) {
+            const container = document.getElementById('autoClosedContainer');
+            
+            if (alerts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clock"></i>
+                        <h3>No Auto-Closed Alerts</h3>
+                        <p>Auto-closed alerts will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Alert ID</th>
+                                <th>Type</th>
+                                <th>Driver</th>
+                                <th>Closed At</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${alerts.map(alert => `
+                                <tr>
+                                    <td>${alert.alertId?.substring(0, 8)}...</td>
+                                    <td>
+                                        <span class="badge badge-${alert.sourceType === 'overspeed' || alert.sourceType === 'safety_incident' ? 'critical' : 'warning'}">
+                                            ${alert.sourceType}
+                                        </span>
+                                    </td>
+                                    <td>${alert.driverId}</td>
+                                    <td>${new Date(alert.closedAt).toLocaleTimeString()}</td>
+                                    <td>${alert.autoCloseReason || 'Time expired'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function updateInsights(insights) {
+            const container = document.getElementById('insightsContainer');
+            
+            if (!insights || insights.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>No Insights Yet</h3>
+                        <p>Generate data to see system insights</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="insights-grid">
+                    ${insights.map(insight => `
+                        <div class="insight-card ${insight.trend === 'increasing' ? 'increasing' : insight.trend === 'decreasing' ? 'decreasing' : ''}">
+                            <div class="insight-header">
+                                <div class="insight-icon">
+                                    ${insight.trend === 'increasing' ? '📈' : insight.trend === 'decreasing' ? '📉' : '➡️'}
+                                </div>
+                                <div class="insight-title">${insight.title}</div>
+                            </div>
+                            <p>${insight.description}</p>
+                            ${insight.recommendation ? `<p><strong>Recommendation:</strong> ${insight.recommendation}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderTrendChart(trendsData) {
+            const ctx = document.getElementById('trendCanvas').getContext('2d');
+            const statusElement = document.getElementById('chartStatus');
+            
+            // Destroy existing chart
+            if (trendChart) {
+                trendChart.destroy();
+            }
+
+            // Prepare data
+            const labels = trendsData.map(item => {
+                const date = new Date(item.date);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+
+            const criticalData = trendsData.map(item => item.critical || 0);
+            const warningData = trendsData.map(item => item.warning || 0);
+            const infoData = trendsData.map(item => item.info || 0);
+
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Critical',
+                            data: criticalData,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Warning',
+                            data: warningData,
+                            borderColor: '#f39c12',
+                            backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Info',
+                            data: infoData,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Alert Trends Over Time'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            statusElement.textContent = `Showing ${trendsData.length} days of trend data`;
+        }
+
+        function renderEmptyChart() {
+            const ctx = document.getElementById('trendCanvas').getContext('2d');
+            const statusElement = document.getElementById('chartStatus');
+            
+            if (trendChart) {
+                trendChart.destroy();
+            }
+
+            // Create empty chart
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['No Data'],
+                    datasets: [{
+                        label: 'No Data Available',
+                        data: [0],
+                        borderColor: '#95a5a6',
+                        borderWidth: 0,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            statusElement.textContent = 'No trend data available. Generate sample data to see charts.';
+        }
+
+        async function createAlert() {
+            if (!authToken) {
+                showModal('Error', 'Please login first');
+                return;
+            }
+
+            const alertType = document.getElementById('alertType').value;
+            const driverId = document.getElementById('driverId').value.trim();
+
+            if (!driverId) {
+                showModal('Error', 'Please enter a Driver ID');
+                return;
+            }
+
+            try {
+                // Simulate API call - replace with actual API endpoint
+                setTimeout(() => {
+                    showModal('Success', `Alert created successfully for driver ${driverId} (${alertType})`);
+                    loadDashboardData(); // Refresh the dashboard
+                }, 800);
+            } catch (error) {
+                console.error('Create alert error:', error);
+                showModal('Error', 'Failed to create alert. Please try again.');
+            }
+        }
+
+        async function generateSampleData() {
+            if (!authToken) {
+                showModal('Error', 'Please login first');
+                return;
+            }
+
+            try {
+                document.getElementById('chartStatus').textContent = 'Generating sample data...';
+                
+                // Simulate API call - replace with actual API endpoint
+                setTimeout(() => {
+                    showModal('Success', 'Sample data generated successfully!');
+                    loadDashboardData();
+                }, 1500);
+            } catch (error) {
+                showModal('Error', 'Failed to generate sample data');
+                document.getElementById('chartStatus').textContent = 'Error generating data';
+                renderEmptyChart();
+                updateInsights([]);
+                updateTopDrivers([]);
+                updateAutoClosedAlerts([]);
+            }
+        }
+
+        async function loadTrendData() {
+            if (!authToken) return;
+            
+            try {
+                document.getElementById('chartStatus').textContent = 'Loading trend data...';
+                
+                // Simulate API call - replace with actual API endpoint
+                const trendsData = await simulateTrendsData();
+                renderTrendChart(trendsData);
+            } catch (error) {
+                console.error('Error loading trend data:', error);
+                document.getElementById('chartStatus').textContent = 'Error loading trend data';
+                renderEmptyChart();
+            }
+        }
+
+        async function testWebhook() {
+            try {
+                // Simulate API call - replace with actual API endpoint
+                setTimeout(() => {
+                    showModal('Webhook Test', 'Webhook test completed successfully!');
+                }, 800);
+            } catch (error) {
+                console.error('Webhook test error:', error);
+                showModal('Error', 'Webhook test failed. Please check console.');
+            }
+        }
+
+        async function testRuleEngine() {
+            try {
+                // Simulate API call - replace with actual API endpoint
+                setTimeout(() => {
+                    showModal('Rule Engine Test', 'Rule engine is functioning correctly.');
+                }, 800);
+            } catch (error) {
+                console.error('Rule engine test error:', error);
+                showModal('Error', 'Rule engine test failed. Please check console.');
+            }
+        }
+
+        function viewSystemHealth() {
+            // Simulate API call - replace with actual API endpoint
+            setTimeout(() => {
+                showModal('System Health', 
+                    `Status: Healthy\n` +
+                    `Version: 2.4.1\n` +
+                    `Uptime: 12 days, 4 hours\n` +
+                    `Alerts Processed: 1,247\n` +
+                    `Timestamp: ${new Date().toLocaleString()}`
+                );
+            }, 500);
+        }
+
+        function viewApiToken() {
+            if (authToken) {
+                showModal('API Token', 
+                    `Your current API token:\n\n${authToken}\n\n` +
+                    `Use this token in the Authorization header:\n` +
+                    `Authorization: Bearer ${authToken}`
+                );
+            } else {
+                showModal('Error', 'No authentication token found. Please login.');
+            }
+        }
+
+        // Auto-refresh dashboard every 30 seconds if user is logged in
+        setInterval(() => {
+            if (authToken && document.getElementById('dashboardContent').style.display !== 'none') {
+                loadDashboardData();
+            }
+        }, 30000);
+
+        // Initialize empty chart on load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEmptyChart();
+        });
+    </script>
+</body>
+</html>

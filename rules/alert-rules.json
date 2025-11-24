@@ -1,0 +1,27 @@
+{
+  "overspeed": {
+    "escalate_if_count": 3,
+    "window_mins": 60,
+    "initial_severity": "WARNING",
+    "escalated_severity": "CRITICAL",
+    "auto_close_after_mins": 1440
+  },
+  "feedback_negative": {
+    "escalate_if_count": 2,
+    "window_mins": 1440,
+    "initial_severity": "WARNING",
+    "escalated_severity": "CRITICAL",
+    "auto_close_after_mins": 10080
+  },
+  "document_expiry": {
+    "auto_close_if": "document_renewed",
+    "initial_severity": "WARNING",
+    "auto_close_after_mins": 10080
+  },
+  "safety_incident": {
+    "escalate_if_count": 1,
+    "window_mins": 5,
+    "initial_severity": "CRITICAL",
+    "auto_close_after_mins": 43200
+  }
+}
